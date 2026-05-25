@@ -5,11 +5,18 @@ import com.project.expenseTracker.dto.response.ExpenseResponseDTO;
 import com.project.expenseTracker.entity.Category;
 import com.project.expenseTracker.entity.Expense;
 import com.project.expenseTracker.entity.User;
+import com.project.expenseTracker.exceptions.ResourceNotFoundException;
+import com.project.expenseTracker.repository.ExpenseRepository;
+import com.project.expenseTracker.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Component
 public class ExpenseMapper {
+
+    @Autowired
+    private UserRepository userRepository;
 
     public Expense requestDtoToEntity(ExpenseRequestDTO expenseRequestDTO , Category category , User user) {
         Expense expense = new Expense();
@@ -59,5 +66,12 @@ public class ExpenseMapper {
         expenseResponseDTO.setNotes(expense.getNotes());
 
         return expenseResponseDTO;
+    }
+
+    public Expense updateEntityFromDto(ExpenseRequestDTO expenseRequestDTO , Expense expense){
+        if(expenseRequestDTO.getUserId() != null){
+            expense.setUser(userRepository.findById(expenseRequestDTO.getUserId()).orElseThrow(()-> new ResourceNotFoundException("UserId not found")));
+        }
+        return expense;
     }
 }

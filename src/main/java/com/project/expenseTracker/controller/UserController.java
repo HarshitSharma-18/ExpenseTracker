@@ -28,15 +28,8 @@ public class UserController {
 
     @GetMapping("/getUserById/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable Long userId){
-        try {
-            return ResponseEntity
-                    .ok(userService.getUser(userId));
-        }
-        catch (ResourceNotFoundException ex){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("User id nhi hai bhai");
-        }
+        return ResponseEntity
+                .ok(userService.getUser(userId));
     }
 
     @GetMapping("/getAllUsers")
@@ -46,27 +39,13 @@ public class UserController {
 
     @PutMapping("/updateUserUsingId/{userId}")
     public ResponseEntity<?> updateUser(@RequestBody UserRequestDTO userRequestDTO , @PathVariable Long userId) {
-        try {
-            return ResponseEntity
-                    .ok(userService.updateUser(userRequestDTO, userId));
-        }
-        catch (ResourceNotFoundException ex){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Id nhi mil rhi hai update kaise kru");
-        }
+        return ResponseEntity
+                .ok(userService.updateUser(userRequestDTO, userId));
     }
 
     @DeleteMapping("deleteUserById/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
-        try {
-            return ResponseEntity.
-                    ok(userService.deleteUser(userId));
-        }
-        catch (ResourceNotFoundException ex){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Id glt hai delete kaise kru");
-        }
+        return ResponseEntity.
+                ok(userService.deleteUser(userId));
     }
 }
