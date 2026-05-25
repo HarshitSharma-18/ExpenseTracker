@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: expenseTracker
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  datasource:
+    username: root
+    url: jdbc:mysql://localhost:3306/expense_tracker
+    password : tcibmwM5c18$database
