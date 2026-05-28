@@ -1,7 +1,4 @@
 package com.project.expenseTracker.dto.request;
-
-import com.project.expenseTracker.entity.Category;
-import com.project.expenseTracker.entity.User;
 import com.project.expenseTracker.enums.CategoryTypes;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,5 +10,8 @@ public class CategoryRequestDTO {
     private Long user_id;
 
     @NotNull
-    private Category category;
+    private CategoryTypes categoryTypes;
+
+    @NotBlank
+    private String categoryName;
 }

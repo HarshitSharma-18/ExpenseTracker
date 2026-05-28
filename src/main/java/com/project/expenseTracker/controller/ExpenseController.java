@@ -1,8 +1,8 @@
 package com.project.expenseTracker.controller;
 
 import com.project.expenseTracker.dto.request.ExpenseRequestDTO;
+import com.project.expenseTracker.dto.specificationInput.filterRequestDto.List_FilterRequestDTO;
 import com.project.expenseTracker.dto.response.ExpenseResponseDTO;
-import com.project.expenseTracker.exceptions.ResourceNotFoundException;
 import com.project.expenseTracker.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +18,16 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ExpenseResponseDTO> createExpense(@RequestBody ExpenseRequestDTO expenseRequestDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(expenseService.createExpense(expenseRequestDTO));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<ExpenseResponseDTO>> getExpenseBy(@RequestBody List_FilterRequestDTO listFilterRequestDTO){
+        return ResponseEntity.ok(expenseService.getExpenseBy(listFilterRequestDTO));
     }
 
     @GetMapping("/getAllExpense")
@@ -30,24 +35,14 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.getAllExpenses());
     }
 
-//    @GetMapping("/getUserByExpenseId/{expenseId}")
-//    public ResponseEntity<ExpenseResponseDTO> getExpenseByExpenseId(Long expenseId){
-//        return ResponseEntity.ok(expenseService.getExpenseByExpenseId);
-//    }
-//
-//    @GetMapping("/getAllExpenseByUserId/{userId}")
-//    public ResponseEntity<List<ExpenseResponseDTO>> getAllExpenseByUserId(){
-//        return ResponseEntity.ok(expenseService.getAllExpenseByUserId);
-//    }
-
-    @PutMapping("/updateExpense/{userId}")
+    @PutMapping("/update/{userId}")
     public ResponseEntity<ExpenseResponseDTO> updateExpense(@RequestBody ExpenseRequestDTO expenseRequestDTO ,  Long userId){
         return ResponseEntity.ok(expenseService.updateExpense(userId ,expenseRequestDTO));
     }
 
-//    @DeleteMapping("deleteByUserId/{userId}")
-//    public ResponseEntity<String> deleteExpense(Long userId){
-//        return  ResponseEntity.ok(expenseService.deleteExpense(userId));
-//    }
+    @DeleteMapping("delete/{expenseId}")
+    public ResponseEntity<String> deleteExpense(Long expenseId){
+        return  ResponseEntity.ok(expenseService.deleteExpense(expenseId));
+    }
 
 }

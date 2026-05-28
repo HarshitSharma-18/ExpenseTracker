@@ -5,12 +5,9 @@ import com.project.expenseTracker.dto.response.ExpenseResponseDTO;
 import com.project.expenseTracker.entity.Category;
 import com.project.expenseTracker.entity.Expense;
 import com.project.expenseTracker.entity.User;
-import com.project.expenseTracker.exceptions.ResourceNotFoundException;
-import com.project.expenseTracker.repository.ExpenseRepository;
 import com.project.expenseTracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class ExpenseMapper {
@@ -68,10 +65,46 @@ public class ExpenseMapper {
         return expenseResponseDTO;
     }
 
-    public Expense updateEntityFromDto(ExpenseRequestDTO expenseRequestDTO , Expense expense){
-        if(expenseRequestDTO.getUserId() != null){
-            expense.setUser(userRepository.findById(expenseRequestDTO.getUserId()).orElseThrow(()-> new ResourceNotFoundException("UserId not found")));
+    public Expense updateEntityFromDto(ExpenseRequestDTO expenseRequestDTO , Expense expense , Category category){
+        if(expenseRequestDTO.getDescription() != null){
+
+            expense.setDescription(expenseRequestDTO.getDescription());
         }
+
+        if(expenseRequestDTO.getAmount() != null){
+
+            expense.setAmount(expenseRequestDTO.getAmount());
+        }
+
+        if(expenseRequestDTO.getMerchantName() != null){
+
+            expense.setMerchantName(expenseRequestDTO.getMerchantName());
+        }
+
+        if(expenseRequestDTO.getExpenseDate() != null){
+
+            expense.setExpenseDate(expenseRequestDTO.getExpenseDate());
+        }
+
+        if(expenseRequestDTO.getPaymentMethods() != null){
+
+            expense.setPaymentMethods(expenseRequestDTO.getPaymentMethods());
+        }
+
+        if(expenseRequestDTO.getCurrency() != null){
+
+            expense.setCurrency(expenseRequestDTO.getCurrency());
+        }
+
+        if(expenseRequestDTO.getNotes() != null){
+
+            expense.setNotes(expenseRequestDTO.getNotes());
+        }
+
+        if(expenseRequestDTO.getCategoryId() != null){
+            expense.setCategory(category);
+        }
+
         return expense;
     }
 }

@@ -7,13 +7,12 @@ import com.project.expenseTracker.exceptions.ResourceNotFoundException;
 import com.project.expenseTracker.mapper.UserMapper;
 import com.project.expenseTracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.InputMismatchException;
 import java.util.List;
 
 @Service
@@ -34,7 +33,7 @@ public class UserService {
     }
 
     public UserResponseDTO getUser(Long id){
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID " + id + "not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID " + id + " not found"));
         return userMapper.entityToResponseDto(user);
     }
 

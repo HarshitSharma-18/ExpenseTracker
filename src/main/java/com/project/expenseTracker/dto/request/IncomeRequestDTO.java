@@ -29,7 +29,7 @@ public class IncomeRequestDTO {
     private String sourceName;
 
     @NotNull
-    private PaymentMethods paymentMethod;
+    private PaymentMethods paymentMethods;
 
     private Currency currency = Currency.INR;
 
