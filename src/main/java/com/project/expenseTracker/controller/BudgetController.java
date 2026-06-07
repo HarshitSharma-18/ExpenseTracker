@@ -1,6 +1,7 @@
 package com.project.expenseTracker.controller;
 
-import com.project.expenseTracker.dto.request.BudgetRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.BudgetRequestDTO;
+import com.project.expenseTracker.dto.request.updateRequest.BudgetUpdateRequestDTO;
 import com.project.expenseTracker.dto.response.BudgetResponseDTO;
 import com.project.expenseTracker.dto.specificationInput.filterRequestDto.List_FilterRequestDTO;
 import com.project.expenseTracker.service.BudgetService;
@@ -33,13 +34,14 @@ public class BudgetController {
         return ResponseEntity.ok(budgetService.getAllBudget());
     }
 
-    @PutMapping("/update/{budgetId}")
-    public ResponseEntity<BudgetResponseDTO> updateBudget(@PathVariable Long budgetId , @RequestBody BudgetRequestDTO budgetRequestDTO){
-        return ResponseEntity.ok(budgetService.updateBudget(budgetId , budgetRequestDTO));
+    @PatchMapping("/{budgetId}")
+    public ResponseEntity<BudgetResponseDTO> updateBudget(@PathVariable Long budgetId , @RequestBody BudgetUpdateRequestDTO budgetUpdateRequestDTO){
+        return ResponseEntity.ok(budgetService.updateBudget(budgetId , budgetUpdateRequestDTO));
     }
 
     @DeleteMapping("/delete/{budgetId}")
     public ResponseEntity<String> deleteBudget(@PathVariable Long budgetId){
-        return ResponseEntity.ok(budgetService.deleteBudget(budgetId));
+        return ResponseEntity
+                .ok(budgetService.deleteBudget(budgetId));
     }
 }

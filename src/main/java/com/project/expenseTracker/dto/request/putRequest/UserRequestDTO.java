@@ -1,6 +1,5 @@
-package com.project.expenseTracker.dto.request;
+package com.project.expenseTracker.dto.request.putRequest;
 
-import com.project.expenseTracker.enums.Currency;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class UserRequestDTO {
-    private String username = "User";
+    private String username;
 
     @NotNull
     @Email
@@ -19,5 +18,5 @@ public class UserRequestDTO {
     private String password;
 
     @NotNull
-    private Currency currency;
+    private Long currencyId;
 }

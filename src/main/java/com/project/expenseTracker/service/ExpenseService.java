@@ -1,13 +1,16 @@
 package com.project.expenseTracker.service;
-import com.project.expenseTracker.dto.request.ExpenseRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.ExpenseRequestDTO;
+import com.project.expenseTracker.dto.request.updateRequest.ExpenseUpdateRequestDTO;
 import com.project.expenseTracker.dto.response.ExpenseResponseDTO;
 import com.project.expenseTracker.dto.specificationInput.filterRequestDto.List_FilterRequestDTO;
 import com.project.expenseTracker.entity.Category;
+import com.project.expenseTracker.entity.Currency;
 import com.project.expenseTracker.entity.Expense;
 import com.project.expenseTracker.entity.User;
 import com.project.expenseTracker.exceptions.ResourceNotFoundException;
 import com.project.expenseTracker.mapper.ExpenseMapper;
 import com.project.expenseTracker.repository.CategoryRepository;
+import com.project.expenseTracker.repository.CurrencyRepository;
 import com.project.expenseTracker.repository.ExpenseRepository;
 import com.project.expenseTracker.repository.UserRepository;
 import com.project.expenseTracker.specification.Specifications;
@@ -32,16 +35,26 @@ public class ExpenseService {
     @Autowired
     private ExpenseRepository expenseRepository;
 
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
     public ExpenseResponseDTO createExpense(ExpenseRequestDTO expenseRequestDTO){
 
         User user = userRepository.findById(expenseRequestDTO.getUserId()).orElseThrow(()-> new ResourceNotFoundException("UserId not found"));
+
         Category category = categoryRepository.findById(expenseRequestDTO.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("CategoryId not found"));
 
-        Expense newExpense = expenseMapper.requestDtoToEntity(expenseRequestDTO , category, user);
+        if(expenseRequestDTO.getCurrencyId() == null){
+            Expense expense = expenseMapper.requestDtoToEntity(expenseRequestDTO , category , user , user.getCurrency());
 
-        expenseRepository.save(newExpense);
+            return expenseMapper.entityToResponseDto(expense);
+        }
+        else{
+            Currency currency = currencyRepository.findById(expenseRequestDTO.getCurrencyId()).orElseThrow(()->new ResourceNotFoundException("Invalid CurrencyId"));
 
-        return expenseMapper.entityToResponseDto(newExpense);
+            Expense expense =  expenseMapper.requestDtoToEntity(expenseRequestDTO , category , user , currency);
+            return expenseMapper.entityToResponseDto(expense);
+        }
     }
 
     public List<ExpenseResponseDTO> getAllExpenses(){
@@ -55,18 +68,22 @@ public class ExpenseService {
         return expenseResponseDTOS;
     }
 
-    public ExpenseResponseDTO updateExpense(Long expenseId, ExpenseRequestDTO expenseRequestDTO) {
+    public ExpenseResponseDTO updateExpense(Long expenseId, ExpenseUpdateRequestDTO expenseUpdateRequestDTO) {
         Expense expense = expenseRepository.findById(expenseId).orElseThrow(()-> new ResourceNotFoundException("Expense with expenseId " + expenseId + " not found"));
 
-        if(expenseRequestDTO.getCategoryId() != null){
-            Category category = categoryRepository.findById(expenseRequestDTO.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Invalid Category"));
-            Expense updatedExpense = expenseMapper.updateEntityFromDto(expenseRequestDTO, expense , category);
-            return expenseMapper.entityToResponseDto(updatedExpense);
+        Category category = null;
+        Currency currency = null;
+
+        if(expenseUpdateRequestDTO.getCategoryId() != null){
+            category = categoryRepository.findById(expenseUpdateRequestDTO.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Invalid CategoryId"));
         }
-        else{
-            Expense updatedExpense = expenseMapper.updateEntityFromDto(expenseRequestDTO, expense , null);
-            return expenseMapper.entityToResponseDto(updatedExpense);
+        if(expenseUpdateRequestDTO.getCurrencyId() != null){
+            currency = currencyRepository.findById(expenseUpdateRequestDTO.getCurrencyId()).orElseThrow(() -> new ResourceNotFoundException("Invalid CurrencyId"));
         }
+
+        Expense updatedExpense = expenseMapper.updateExpense(expenseUpdateRequestDTO , expense , category , currency);
+
+        return expenseMapper.entityToResponseDto(updatedExpense);
     }
 
     public List<ExpenseResponseDTO> getExpenseBy(List_FilterRequestDTO listFilterRequestDTO){

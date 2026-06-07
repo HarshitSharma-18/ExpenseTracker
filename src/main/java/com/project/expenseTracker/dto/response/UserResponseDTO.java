@@ -1,6 +1,6 @@
 package com.project.expenseTracker.dto.response;
 
-import com.project.expenseTracker.enums.Currency;
+import com.project.expenseTracker.entity.Currency;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,5 +12,6 @@ public class UserResponseDTO {
     private String email;
     private LocalDateTime createdAt;
     private LocalDateTime lastUpdatedAt;
+
     private Currency currency;
 }

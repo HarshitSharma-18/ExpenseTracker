@@ -1,6 +1,7 @@
 package com.project.expenseTracker.controller;
 
-import com.project.expenseTracker.dto.request.IncomeRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.IncomeRequestDTO;
+import com.project.expenseTracker.dto.request.updateRequest.IncomeUpdateRequestDTO;
 import com.project.expenseTracker.dto.response.IncomeResponseDTO;
 import com.project.expenseTracker.dto.specificationInput.filterRequestDto.List_FilterRequestDTO;
 import com.project.expenseTracker.service.IncomeService;
@@ -30,18 +31,19 @@ public class IncomeController {
         return ResponseEntity.ok(incomeService.getIncomeBy(listFilterRequestDTO));
     }
 
-    @GetMapping("/getAllIncome")
+    @GetMapping("/incomes")
     public ResponseEntity<List<IncomeResponseDTO>> getAllIncome(){
         return ResponseEntity.ok(incomeService.getAllIncome());
     }
 
-    @GetMapping("/update/{incomeId}")
-    public ResponseEntity<IncomeResponseDTO> updateIncome(@PathVariable Long incomeId , @RequestBody IncomeRequestDTO incomeRequestDTO){
-        return ResponseEntity.ok(incomeService.updateIncome(incomeId , incomeRequestDTO));
+    @PatchMapping("/{incomeId}")
+    public ResponseEntity<IncomeResponseDTO> updateIncome(@PathVariable Long incomeId , @RequestBody IncomeUpdateRequestDTO incomeUpdateRequestDTO){
+        return ResponseEntity.ok(incomeService.updateIncome(incomeId , incomeUpdateRequestDTO));
     }
 
     @DeleteMapping("/delete/{incomeId}")
     public ResponseEntity<String> deleteIncome(@PathVariable Long incomeId){
-        return ResponseEntity.ok(incomeService.deleteIncome(incomeId));
+        return ResponseEntity
+                .ok(incomeService.deleteIncome(incomeId));
     }
 }

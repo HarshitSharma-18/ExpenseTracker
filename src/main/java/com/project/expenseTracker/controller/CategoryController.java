@@ -1,6 +1,6 @@
 package com.project.expenseTracker.controller;
 
-import com.project.expenseTracker.dto.request.CategoryRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.CategoryRequestDTO;
 import com.project.expenseTracker.dto.response.CategoryResponseDTO;
 import com.project.expenseTracker.dto.specificationInput.filterRequestDto.List_FilterRequestDTO;
 import com.project.expenseTracker.service.CategoryService;
@@ -37,6 +37,7 @@ public class CategoryController {
 
     @DeleteMapping("/delete/{categoryId}")
     public ResponseEntity<String> deleteBudget(@PathVariable Long categoryId) {
-        return ResponseEntity.ok(categoryService.deleteCategory(categoryId));
+        return ResponseEntity
+                .ok(categoryService.deleteCategory(categoryId));
     }
 }

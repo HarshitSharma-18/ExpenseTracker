@@ -1,4 +1,4 @@
-package com.project.expenseTracker.dto.request;
+package com.project.expenseTracker.dto.request.putRequest;
 import com.project.expenseTracker.enums.CategoryTypes;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

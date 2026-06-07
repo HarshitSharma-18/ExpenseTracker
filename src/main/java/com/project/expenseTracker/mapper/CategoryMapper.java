@@ -1,6 +1,6 @@
 package com.project.expenseTracker.mapper;
 
-import com.project.expenseTracker.dto.request.CategoryRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.CategoryRequestDTO;
 import com.project.expenseTracker.dto.response.CategoryResponseDTO;
 import com.project.expenseTracker.entity.Category;
 import com.project.expenseTracker.entity.User;

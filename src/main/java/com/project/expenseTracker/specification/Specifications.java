@@ -19,6 +19,7 @@ public class Specifications {
 
                 switch (FilterRequestDTO.getOperation()){
                     case EQUALS:
+
                         predicateList.add(criteriaBuilder.equal(root.get(FilterRequestDTO.getColumn()),
                                 FilterRequestDTO.getValue()
                                 )

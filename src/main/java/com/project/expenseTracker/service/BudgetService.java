@@ -1,11 +1,13 @@
 package com.project.expenseTracker.service;
 
-import com.project.expenseTracker.dto.request.BudgetRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.BudgetRequestDTO;
+import com.project.expenseTracker.dto.request.updateRequest.BudgetUpdateRequestDTO;
 import com.project.expenseTracker.dto.response.BudgetResponseDTO;
 import com.project.expenseTracker.dto.specificationInput.filterRequestDto.List_FilterRequestDTO;
 import com.project.expenseTracker.entity.Budget;
 import com.project.expenseTracker.entity.Category;
 import com.project.expenseTracker.entity.User;
+import com.project.expenseTracker.exceptions.ResourceAlreadyExistsException;
 import com.project.expenseTracker.exceptions.ResourceNotFoundException;
 import com.project.expenseTracker.mapper.BudgetMapper;
 import com.project.expenseTracker.repository.BudgetRepository;
@@ -35,9 +37,13 @@ public class BudgetService {
     private UserRepository userRepository;
 
     public BudgetResponseDTO createBudget(BudgetRequestDTO budgetRequestDTO){
+        User user = userRepository.findById(budgetRequestDTO.getUserId()).orElseThrow(()-> new ResourceNotFoundException("Invalid UserId , Please provide valid UserId"));
+
+        if(budgetRepository.existsByCategoryIdAndUserId(budgetRequestDTO.getCategoryId() , budgetRequestDTO.getUserId())){
+            throw new ResourceAlreadyExistsException("Budget Already Exists");
+        }
 
         Category category = categoryRepository.findById(budgetRequestDTO.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Invalid Category Id , please give valid Category"));
-        User user = userRepository.findById(budgetRequestDTO.getUserId()).orElseThrow(()-> new ResourceNotFoundException("Invalid UserId , Please provide valid UserId"));
         Budget newBudget = budgetMapper.requestDtoToEntity(budgetRequestDTO , category , user);
 
         budgetRepository.save(newBudget);
@@ -71,18 +77,17 @@ public class BudgetService {
         return budgetResponseDTOList;
     }
 
-    public BudgetResponseDTO updateBudget(Long budgetId , BudgetRequestDTO budgetRequestDTO) {
+    public BudgetResponseDTO updateBudget(Long budgetId , BudgetUpdateRequestDTO budgetUpdateRequestDTO) {
         Budget budget = budgetRepository.findById(budgetId).orElseThrow(() -> new ResourceNotFoundException("Invalid budgetId , please provide valid budgetId"));
 
-        if (budgetRequestDTO.getCategoryId() != null) {
-            Category category = categoryRepository.findById(budgetRequestDTO.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Invalid CategoryId , please provide valid CategoryId"));
-            Budget updatedBudget = budgetMapper.updateEntityFromDto(budgetRequestDTO, budget , category);
-            return budgetMapper.entityToResponseDto(updatedBudget);
+        Category category = null;
+
+        if(budgetUpdateRequestDTO.getCategoryId() != null){
+            category = categoryRepository.findById(budgetUpdateRequestDTO.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Invalid CategoryId"));
         }
-        else{
-            Budget updatedBudget = budgetMapper.updateEntityFromDto(budgetRequestDTO ,budget, null);
-            return budgetMapper.entityToResponseDto(updatedBudget);
-        }
+
+        Budget updatedBudget = budgetMapper.updateBudget(budgetUpdateRequestDTO, budget , category);
+        return budgetMapper.entityToResponseDto(updatedBudget);
     }
 
 

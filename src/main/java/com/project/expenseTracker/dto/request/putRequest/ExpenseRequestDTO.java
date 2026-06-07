@@ -1,8 +1,9 @@
-package com.project.expenseTracker.dto.request;
-import com.project.expenseTracker.enums.Currency;
+package com.project.expenseTracker.dto.request.putRequest;
 import com.project.expenseTracker.enums.PaymentMethods;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -19,17 +20,19 @@ public class ExpenseRequestDTO {
     private String description;
 
     @NotNull
+    @Positive
     private Double amount;
 
     private String merchantName;
 
     @NotNull
+    @PastOrPresent
     private LocalDate expenseDate;
 
     @NotNull
     private PaymentMethods paymentMethods;
 
-    private Currency currency = Currency.INR;
+    private Long currencyId;
 
     private String notes;
 }

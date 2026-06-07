@@ -1,6 +1,7 @@
 package com.project.expenseTracker.controller;
 
-import com.project.expenseTracker.dto.request.ExpenseRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.ExpenseRequestDTO;
+import com.project.expenseTracker.dto.request.updateRequest.ExpenseUpdateRequestDTO;
 import com.project.expenseTracker.dto.specificationInput.filterRequestDto.List_FilterRequestDTO;
 import com.project.expenseTracker.dto.response.ExpenseResponseDTO;
 import com.project.expenseTracker.service.ExpenseService;
@@ -18,7 +19,7 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ExpenseResponseDTO> createExpense(@RequestBody ExpenseRequestDTO expenseRequestDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -30,19 +31,20 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.getExpenseBy(listFilterRequestDTO));
     }
 
-    @GetMapping("/getAllExpense")
+    @GetMapping("/expenses")
     public ResponseEntity<List<ExpenseResponseDTO>> getAllExpenses(){
         return ResponseEntity.ok(expenseService.getAllExpenses());
     }
 
-    @PutMapping("/update/{userId}")
-    public ResponseEntity<ExpenseResponseDTO> updateExpense(@RequestBody ExpenseRequestDTO expenseRequestDTO ,  Long userId){
-        return ResponseEntity.ok(expenseService.updateExpense(userId ,expenseRequestDTO));
+    @PatchMapping("/{expenseId}")
+    public ResponseEntity<ExpenseResponseDTO> updateExpense(@PathVariable Long expenseId ,@RequestBody ExpenseUpdateRequestDTO expenseUpdateRequestDTO){
+        return ResponseEntity.ok(expenseService.updateExpense(expenseId , expenseUpdateRequestDTO));
     }
 
     @DeleteMapping("delete/{expenseId}")
     public ResponseEntity<String> deleteExpense(Long expenseId){
-        return  ResponseEntity.ok(expenseService.deleteExpense(expenseId));
+        return  ResponseEntity
+                .ok(expenseService.deleteExpense(expenseId));
     }
 
 }

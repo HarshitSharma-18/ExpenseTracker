@@ -1,7 +1,6 @@
 package com.project.expenseTracker.entity;
 
 import com.project.expenseTracker.enums.CategoryTypes;
-import com.project.expenseTracker.enums.Currency;
 import com.project.expenseTracker.enums.PaymentMethods;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -24,32 +23,44 @@ public class Income {
     private Long id;
 
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "column_id")
+    private Category category;
+
+    @NotNull
+    @Column(nullable = false)
     @Positive
     private Double amount;
 
     private String description;
 
     @NotNull
+    @Column(nullable = false)
     @PastOrPresent
     private LocalDate creditDate;
 
     @NotBlank
+    @Column(nullable = false)
     private String sourceName;
 
     @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CategoryTypes categoryTypes;
 
     @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PaymentMethods paymentMethods;
 
-    @Enumerated(EnumType.STRING)
-    private Currency currency = Currency.INR;
+    @OneToOne
+    @JoinColumn(name = "currency")
+    private Currency currency;
 
     private String notes;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @NotNull
@@ -59,6 +70,7 @@ public class Income {
 
     @PrePersist
     public void onCreate(){
+        createdAt = LocalDateTime.now();
         categoryTypes = INCOME;
     }
 }

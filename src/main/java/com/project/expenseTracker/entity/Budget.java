@@ -1,6 +1,5 @@
 package com.project.expenseTracker.entity;
 import com.project.expenseTracker.enums.BudgetPeriod;
-import com.project.expenseTracker.enums.CategoryTypes;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -21,16 +20,19 @@ public class Budget {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Size(max = 100)
+    @NotBlank
+    @Column(nullable = false,length = 100)
     private String budgetTitle;
 
     @NotNull
     @Positive
+    @Column(nullable = false)
     private Double budgetAmount;
 
     @NotNull
     @FutureOrPresent
+    @Column(nullable = false)
     private LocalDate startDate;
 
     @Enumerated(EnumType.STRING)

@@ -1,6 +1,7 @@
 package com.project.expenseTracker.mapper;
 
-import com.project.expenseTracker.dto.request.BudgetRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.BudgetRequestDTO;
+import com.project.expenseTracker.dto.request.updateRequest.BudgetUpdateRequestDTO;
 import com.project.expenseTracker.dto.response.BudgetResponseDTO;
 import com.project.expenseTracker.entity.Budget;
 import com.project.expenseTracker.entity.Category;
@@ -37,7 +38,9 @@ public class BudgetMapper {
 
         budgetResponseDTO.setId(budget.getId());
 
-        budgetResponseDTO.setCategoryTypeName(budget.getCategory().getCategoryName());
+        budgetResponseDTO.setCategoryId(budget.getCategory().getId());
+        budgetResponseDTO.setCategoryName(budget.getCategory().getCategoryName());
+        budgetResponseDTO.setCategoryType(budget.getCategory().getCategoryType());
 
         budgetResponseDTO.setBudgetTitle(budget.getBudgetTitle());
 
@@ -54,33 +57,33 @@ public class BudgetMapper {
         return budgetResponseDTO;
     }
 
-    public Budget updateEntityFromDto(BudgetRequestDTO budgetRequestDTO , Budget budget , Category category){
+    public Budget updateBudget(BudgetUpdateRequestDTO budgetUpdateRequestDTO , Budget budget , Category category){
 
-        if(budgetRequestDTO.getBudgetTitle() != null){
-            budget.setBudgetTitle(budgetRequestDTO.getBudgetTitle());
+        if(budgetUpdateRequestDTO.getBudgetTitle() != null){
+            budget.setBudgetTitle(budgetUpdateRequestDTO.getBudgetTitle());
         }
 
-        if(budgetRequestDTO.getBudgetAmount() != null){
-            budget.setBudgetAmount(budgetRequestDTO.getBudgetAmount());
+        if(budgetUpdateRequestDTO.getBudgetAmount() != null){
+            budget.setBudgetAmount(budgetUpdateRequestDTO.getBudgetAmount());
         }
 
-        if(budgetRequestDTO.getStartDate() != null){
-            budget.setStartDate(budgetRequestDTO.getStartDate());
+        if(budgetUpdateRequestDTO.getStartDate() != null){
+            budget.setStartDate(budgetUpdateRequestDTO.getStartDate());
         }
 
-        if(budgetRequestDTO.getBudgetPeriod() != null){
-            budget.setBudgetPeriod(budgetRequestDTO.getBudgetPeriod());
+        if(budgetUpdateRequestDTO.getBudgetPeriod() != null){
+            budget.setBudgetPeriod(budgetUpdateRequestDTO.getBudgetPeriod());
         }
 
-        if(budgetRequestDTO.getEndDate() != null){
-            budget.setEndDate(budgetRequestDTO.getEndDate());
+        if(budgetUpdateRequestDTO.getEndDate() != null){
+            budget.setEndDate(budgetUpdateRequestDTO.getEndDate());
         }
 
-        if(budgetRequestDTO.getNotes() != null){
-            budget.setNotes(budgetRequestDTO.getNotes());
+        if(budgetUpdateRequestDTO.getNotes() != null){
+            budget.setNotes(budgetUpdateRequestDTO.getNotes());
         }
 
-        if(budgetRequestDTO.getCategoryId() != null){
+        if(budgetUpdateRequestDTO.getCategoryId() != null){
             budget.setCategory(category);
         }
 

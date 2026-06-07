@@ -1,10 +1,9 @@
 package com.project.expenseTracker.controller;
 
-import com.project.expenseTracker.dto.request.UserRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.UserRequestDTO;
+import com.project.expenseTracker.dto.request.updateRequest.UserUpdateRequestDTO;
 import com.project.expenseTracker.dto.response.UserResponseDTO;
-import com.project.expenseTracker.exceptions.ResourceNotFoundException;
 import com.project.expenseTracker.service.UserService;
-import jakarta.persistence.GeneratedValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,14 +37,14 @@ public class UserController {
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<?> updateUser(@RequestBody UserRequestDTO userRequestDTO , @PathVariable Long userId) {
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long userId , @RequestBody UserUpdateRequestDTO userUpdateRequestDTO) {
         return ResponseEntity
-                .ok(userService.updateUser(userRequestDTO, userId));
+                .ok(userService.updateUser(userUpdateRequestDTO, userId));
     }
 
     @DeleteMapping("delete/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
-        return ResponseEntity.
-                ok(userService.deleteUser(userId));
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        return ResponseEntity
+                .ok(userService.deleteUser(userId));
     }
 }

@@ -1,22 +1,35 @@
-package com.project.expenseTracker.dto.response;
+package com.project.expenseTracker.dto.request.putRequest;
+
 import com.project.expenseTracker.enums.BudgetPeriod;
-import com.project.expenseTracker.enums.CategoryTypes;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-public class BudgetResponseDTO {
-    private Long id;
-
+public class BudgetRequestDTO {
+    @NotNull
     private Long categoryId;
-    private String categoryName;
-    private CategoryTypes categoryType;
 
+    @NotNull
+    private Long userId;
+
+    @NotBlank
+    @Size(max = 100)
     private String budgetTitle;
+
+    @NotNull
+    @Positive
     private Double budgetAmount;
+
+    @NotNull
+    @FutureOrPresent
     private LocalDate startDate;
+
     private BudgetPeriod budgetPeriod;
+
+    @FutureOrPresent
     private LocalDate endDate;
+
     private String notes;
 }

@@ -1,5 +1,4 @@
 package com.project.expenseTracker.entity;
-import com.project.expenseTracker.enums.Currency;
 import com.project.expenseTracker.enums.PaymentMethods;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -18,34 +17,41 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "category_Id")
-    private Category category;
-
     @NotBlank
+    @Column(nullable = false)
     private String description;
 
     @NotNull
+    @Column(nullable = false)
     private Double amount;
 
     private String merchantName;
 
     @NotNull
+    @Column(nullable = false)
     @PastOrPresent
     private LocalDate expenseDate;
 
     @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PaymentMethods paymentMethods;
 
-    @Enumerated(EnumType.STRING)
-    private Currency currency = Currency.INR;
+    @OneToOne
+    @JoinColumn(name = "currency_id")
+    private Currency currency;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     private String notes;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "category_Id")
+    private Category category;
+
 
     @NotNull
     @ManyToOne

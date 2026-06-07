@@ -1,8 +1,7 @@
 package com.project.expenseTracker.service;
 
-import com.project.expenseTracker.dto.request.CategoryRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.CategoryRequestDTO;
 import com.project.expenseTracker.dto.response.CategoryResponseDTO;
-import com.project.expenseTracker.dto.specificationInput.filerDto.FilterRequestDTO;
 import com.project.expenseTracker.dto.specificationInput.filterRequestDto.List_FilterRequestDTO;
 import com.project.expenseTracker.entity.Category;
 import com.project.expenseTracker.entity.User;

@@ -14,10 +14,12 @@ public class Category{
     private Long id;
 
     @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CategoryTypes categoryType;
 
     @NotBlank
+    @Column(nullable = false)
     private String categoryName;
 
     @NotNull

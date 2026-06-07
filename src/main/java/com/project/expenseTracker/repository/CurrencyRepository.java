@@ -1,11 +1,9 @@
 package com.project.expenseTracker.repository;
 
-import com.project.expenseTracker.entity.User;
+import com.project.expenseTracker.entity.Currency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-
-    boolean existsByEmail(String email);
+public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 }

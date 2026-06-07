@@ -1,18 +1,18 @@
 package com.project.expenseTracker.service;
 
-import com.project.expenseTracker.dto.request.UserRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.UserRequestDTO;
+import com.project.expenseTracker.dto.request.updateRequest.UserUpdateRequestDTO;
 import com.project.expenseTracker.dto.response.UserResponseDTO;
+import com.project.expenseTracker.entity.Currency;
 import com.project.expenseTracker.entity.User;
+import com.project.expenseTracker.exceptions.ResourceAlreadyExistsException;
 import com.project.expenseTracker.exceptions.ResourceNotFoundException;
 import com.project.expenseTracker.mapper.UserMapper;
+import com.project.expenseTracker.repository.CurrencyRepository;
 import com.project.expenseTracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
 import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.InputMismatchException;
 import java.util.List;
 
 @Service
@@ -24,8 +24,26 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
     public UserResponseDTO createNewUser(UserRequestDTO userRequestDTO){
-        User newUser = userMapper.requestDtoToEntity(userRequestDTO);
+        if(userRepository.existsByEmail(userRequestDTO.getEmail())){
+            throw new ResourceAlreadyExistsException("Email ID already exist , Please Sign_up with another Email");
+        }
+
+        Currency currency = null;
+
+        if(userRequestDTO.getCurrencyId() != null){
+            currency = currencyRepository.findById(userRequestDTO.getCurrencyId()).orElseThrow(()->new ResourceNotFoundException("Invalid CurrencyId"));
+        }
+
+        User newUser = userMapper.requestDtoToEntity(userRequestDTO , currency);
+
+        //settingUsername as user if the username is null
+        if(userRequestDTO.getUsername() == null){
+            newUser.setUsername("User");
+        }
 
         userRepository.save(newUser);
 
@@ -49,9 +67,15 @@ public class UserService {
         return listOfResponseUser;
     }
 
-    public UserResponseDTO updateUser(UserRequestDTO userRequestDTO , Long userId){
-       User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User with ID " + userId + "not found"));
-       User updatedUser = userMapper.updateEntityFromDto(userRequestDTO , user);
+    public UserResponseDTO updateUser(UserUpdateRequestDTO userUpdateRequestDTO , Long userId){
+        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User with ID " + userId + "not found"));
+
+        Currency currency = null;
+        if(userUpdateRequestDTO.getCurrencyId() != null){
+            currency = currencyRepository.findById(userUpdateRequestDTO.getCurrencyId()).orElseThrow(()-> new ResourceNotFoundException("Invalid CurrencyId"));
+        }
+
+        User updatedUser = userMapper.updateUser(userUpdateRequestDTO, user , currency);
 
        return userMapper.entityToResponseDto(updatedUser);
     }

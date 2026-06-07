@@ -1,6 +1,5 @@
-package com.project.expenseTracker.dto.request;
+package com.project.expenseTracker.dto.request.putRequest;
 
-import com.project.expenseTracker.enums.Currency;
 import com.project.expenseTracker.enums.PaymentMethods;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +13,9 @@ import java.time.LocalDate;
 public class IncomeRequestDTO {
     @NotNull
     private Long userId;
+
+    @NotNull
+    private Long categoryId;
 
     @NotNull
     @Positive
@@ -31,7 +33,7 @@ public class IncomeRequestDTO {
     @NotNull
     private PaymentMethods paymentMethods;
 
-    private Currency currency = Currency.INR;
+    private Long currencyId;
 
     @NotBlank
     private String notes;

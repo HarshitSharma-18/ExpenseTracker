@@ -1,21 +1,22 @@
 package com.project.expenseTracker.mapper;
 
-import com.project.expenseTracker.dto.request.UserRequestDTO;
+import com.project.expenseTracker.dto.request.putRequest.UserRequestDTO;
+import com.project.expenseTracker.dto.request.updateRequest.UserUpdateRequestDTO;
 import com.project.expenseTracker.dto.response.UserResponseDTO;
+import com.project.expenseTracker.entity.Currency;
 import com.project.expenseTracker.entity.User;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class UserMapper {
 
-    public User requestDtoToEntity(UserRequestDTO userRequestDTO){
+    public User requestDtoToEntity(UserRequestDTO userRequestDTO , Currency currency){
         User user = new User();
 
         user.setUsername(userRequestDTO.getUsername());
         user.setEmail(userRequestDTO.getEmail());
         user.setPassword(userRequestDTO.getPassword());
-        user.setCurrency(userRequestDTO.getCurrency());
+        user.setCurrency(currency);
 
         return user;
     }
@@ -27,26 +28,20 @@ public class UserMapper {
         userResponseDTO.setUsername(user.getUsername());
         userResponseDTO.setEmail(user.getEmail());
         userResponseDTO.setCurrency(user.getCurrency());
+        userResponseDTO.setCreatedAt(user.getCreatedAt());
+        userResponseDTO.setLastUpdatedAt(user.getUpdatedAt());
 
         return userResponseDTO;
     }
 
-    public User updateEntityFromDto(UserRequestDTO userRequestDTO, User user){
+    public User updateUser(UserUpdateRequestDTO userUpdateRequestDTO, User user , Currency currency){
 
-        if (userRequestDTO.getUsername() != null) {
-            user.setUsername(userRequestDTO.getUsername());
+        if (userUpdateRequestDTO.getUsername() != null) {
+            user.setUsername(userUpdateRequestDTO.getUsername());
         }
 
-        if (userRequestDTO.getEmail() != null) {
-            user.setEmail(userRequestDTO.getEmail());
-        }
-
-        if (userRequestDTO.getPassword() != null) {
-            user.setPassword(userRequestDTO.getPassword());
-        }
-
-        if (userRequestDTO.getCurrency() != null) {
-            user.setCurrency(userRequestDTO.getCurrency());
+        if (currency != null) {
+            user.setCurrency(currency);
         }
 
         return user;
